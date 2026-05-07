@@ -22,10 +22,11 @@ def fit_without_reg(examples):
     Args:
     - examples: a list of two (x, y) tuples, where x is the feature and y is the label
     """
-    w0 = 0
-    w1 = 0
     ## BEGIN YOUR CODE ##
+    (x1, y1), (x2, y2) = examples
 
+    w1 = (y2 - y1) / (x2 - x1)
+    w0 = y1 - w1 * x1
     ## END YOUR CODE ##
     return w0, w1
 
@@ -54,4 +55,6 @@ def test_error(w0, w1):
 if __name__ == "__main__": 
     
     ## BEGIN YOUR SIMULATION CODE ##
-
+    print("Testing fit_without_reg: ")
+    examples = generate_training_examples(2)
+    print(f"Points: {examples}")
