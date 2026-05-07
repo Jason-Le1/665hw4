@@ -66,12 +66,25 @@ def test_error(w0, w1):
 if __name__ == "__main__": 
     
     ## BEGIN YOUR SIMULATION CODE ##
-    print("Testing fit_without_reg: ")
-    examples = generate_training_examples(2)
-    w0, w1 = fit_without_reg(examples)
-    print(f"Points: {examples}")
-    print(f"w0 and w1: {w0, w1}")
+    trials = 1000
+    step_size = 0.05
+    lambda_hp = 1.0
+    total_error_no_reg = 0.0
+    total_error_reg = 0.0
 
-    print("Testing fit_with_reg: ")
-    w0_reg, w1_reg = fit_with_reg(examples, 1.0, 0.05, 1000)
-    print(f"w0_reg and w1_reg: {w0_reg, w1_reg}")
+    for _ in range(trials):
+        # Sample two points
+        examples = generate_training_examples(n=2)
+
+        w0_no_reg, w1_no_reg = fit_without_reg(examples)
+        w0_reg, w1_reg = fit_with_reg(examples, lambda_hp, step_size, trials)
+
+        # Estimate the out-of-sample error of reg and no_reg
+        total_error_no_reg += test_error(w0_no_reg, w1_no_reg)
+        total_error_reg += test_error(w0_reg, w1_reg)
+
+    avg_error_no_reg = total_error_no_reg / trials
+    avg_error_reg = total_error_reg / trials
+
+    print(f"Average test error without regularization: {avg_error_no_reg:.6f}")
+    print(f"Average test error with regularization: {avg_error_reg:.6f}")
