@@ -57,4 +57,6 @@ if __name__ == "__main__":
     ## BEGIN YOUR SIMULATION CODE ##
     print("Testing fit_without_reg: ")
     examples = generate_training_examples(2)
+    w0, w1 = fit_without_reg(examples)
     print(f"Points: {examples}")
+    print(f"w0 and w1: {w0, w1}")
