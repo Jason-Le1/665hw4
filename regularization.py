@@ -31,17 +31,28 @@ def fit_without_reg(examples):
     return w0, w1
 
 
-def fit_with_reg(examples, lambda_hp):
+def fit_with_reg(examples, lambda_hp, step_size, steps):
     """Computes values of w0 and w1 that minimize the regularized sum-of-squared-errors cost function
 
     Args:
     - examples: a list of two (x, y) tuples, where x is the feature and y is the label
     - lambda_hp: a float representing the value of the lambda hyperparameter; a larger value means more regularization
+    - step_size: a float representing the learning rate of parameters between updates
+    - steps: a float representing the number of gradient descent updates
     """
-    w0 = 0
-    w1 = 0
+    (x1, y1), (x2, y2) = examples
+    w0 = 0.0
+    w1 = 0.0
     ## BEGIN YOUR CODE ##
+    for _ in range(steps):
+        e1 = y1 - (w0 + w1 * x1)
+        e2 = y2 - (w0 + w1 * x2)
 
+        g0 = -2 * (e1 + e2) + 2 * lambda_hp * w0
+        g1 = -2 * (x1 * e1 + x2 * e2) + 2 * lambda_hp * w1
+
+        w0 -= step_size * g0
+        w1 -= step_size * g1
     ## END YOUR CODE ##
     return (w0, w1)
 
@@ -60,3 +71,7 @@ if __name__ == "__main__":
     w0, w1 = fit_without_reg(examples)
     print(f"Points: {examples}")
     print(f"w0 and w1: {w0, w1}")
+
+    print("Testing fit_with_reg: ")
+    w0_reg, w1_reg = fit_with_reg(examples, 1.0, 0.05, 1000)
+    print(f"w0_reg and w1_reg: {w0_reg, w1_reg}")
